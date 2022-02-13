@@ -1,0 +1,78 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: falco-sidekick
+  namespace: config-control
+  labels:
+    availability: medium
+spec:
+  description: Test Cluster for Falco Sidekick
+  location: northamerica-northeast1
+  initialNodeCount: 1
+  defaultMaxPodsPerNode: 110
+  workloadIdentityConfig:
+    workloadPool: ${PROJECT_ID}.svc.id.goog # kpt-set: ${PROJECT_ID}.svc.id.goog
+  networkRef:
+    name: falco-net
+  networkingMode: VPC_NATIVE
+  subnetworkRef:
+    name: falco-subnet
+  ipAllocationPolicy:
+    servicesSecondaryRangeName: servicesrange
+    clusterSecondaryRangeName: clusterrange
+  clusterAutoscaling:
+    enabled: true
+    autoscalingProfile: BALANCED
+    resourceLimits:
+    - resourceType: cpu
+      maximum: 100
+      minimum: 10
+    - resourceType: memory
+      maximum: 1000
+      minimum: 100
+  maintenancePolicy:
+    dailyMaintenanceWindow:
+      startTime: 00:00
+  releaseChannel:
+    channel: STABLE
+  enableBinaryAuthorization: true
+  enableIntranodeVisibility: true
+  enableShieldedNodes: true
+  addonsConfig:
+    networkPolicyConfig:
+      disabled: false
+    dnsCacheConfig:
+      enabled: true
+    configConnectorConfig:
+      enabled: true
+  networkPolicy:
+    enabled: true
+  podSecurityPolicyConfig:
+    enabled: false
+  verticalPodAutoscaling:
+    enabled: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: falco-net
+  namespace: config-control
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: falco-subnet
+  namespace: config-control
+spec:
+  ipCidrRange: 10.2.0.0/24
+  region: northamerica-northeast1
+  networkRef:
+    name: falco-net
+  secondaryIpRange:
+  - rangeName: servicesrange
+    ipCidrRange: 10.3.0.0/24
+  - rangeName: clusterrange
+    ipCidrRange: 10.4.0.0/24

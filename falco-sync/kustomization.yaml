@@ -1,0 +1,15 @@
+resources:
+  - namespace.yaml
+helmCharts:
+- name: falco
+  repo: https://falcosecurity.github.io/charts
+  version: v1.17.0
+  releaseName: falco
+  namespace: falco
+  valuesFile: falco-values.yaml
+patchesJson6902:
+- target:
+    version: v1
+    kind: ServiceAccount
+    name: falco-falcosidekick 
+  path: serviceaccounts.yaml

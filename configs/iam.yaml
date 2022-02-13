@@ -1,0 +1,43 @@
+###
+#
+# Service Accounts
+# - Falco Sidekick
+#
+# IAM Roles for Workload Identity and PubSub
+# - Falco Sidekick
+#
+#
+###
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: falco-sidekick
+  namespace: config-control
+spec:
+  displayName: falco sidekick service account
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: falcosidekick-pubsub
+  namespace: config-control
+spec:
+  member: serviceAccount:falco-sidekick@${PROJECT_ID}.iam.gserviceaccount.com # kpt-set: serviceAccount:falco-sidekick@${PROJECT_ID}.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: ${PROJECT_ID} # kpt-set: ${PROJECT_ID}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: falco-falcosidekick-wi
+  namespace: config-control
+spec:
+  member: serviceAccount:${PROJECT_ID}.svc.id.goog[falco/falco-falcosidekick] # kpt-set: serviceAccount:${PROJECT_ID}.svc.id.goog[falco/falco-falcosidekick]
+  role: roles/iam.workloadIdentityUser
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: falco-sidekick
