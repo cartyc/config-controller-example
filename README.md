@@ -22,6 +22,13 @@ So if everything goes according to plan you will create a Config Controller inst
 
 Without further adoo lets create a config controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I'll be using east1 because that's closest to where I am. Full instructions can be found [here](https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup)
 
+Setup your environment
+```
+export PROJECT_ID=<your_project_id>
+gcloud config set project $PROJECT_ID
+```
+
+
 Create a default network if it doesn't exist already
 ```
 gcloud compute networks create default --subnet-mode=auto
@@ -41,10 +48,6 @@ gcloud anthos config controller create main --location us-east1
 
 Once this is compelete you can get access to the newly created Config Controller cluster by running `gcloud config controller get-credentials main --location us-east1`. Once in the cluster we can start using out `kubectl` commands. Before we do that we'll want to give Config Controller permissions to start creating resources in the project. 
 
-```
-export PROJECT_ID=<your_project_id>
-gcloud config set project $PROJECT_ID
-```
 
 ```
   gcloud iam service-accounts create connector
@@ -74,15 +77,25 @@ data:
   PROJECT_ID: YOUR_PROJECT_ID
 ```
 
-Once that is complete run `kpt fn render` to apply the setters file and then run `kpt live apply` to apply the configs.
+Once that is complete run `kpt fn render` to apply the setters file and then run the following commands to apply the configs.
+
+```
+kpt live init
+kpt live apply
+```
 
 This will spin up a GKE cluster with Config Sync installed and targetting the `deploy` directory of the Source Repo that is being created along with a Pub/Sub instance Falco Sidekick will be sending the Falco Alerts too (the Falco Sidekick UI is also enabled). 
 
-The services will take a while to spin up and you can keep an eye on them by running `kubectl get gcp --namespace config-controller`. For now we're just concerned with whether or not the Source Repository is only so we can push our configs there. This will take a few minutes as the API gets enabled but you can check on it with `kubectl get sourcereporepository`. Once the service reads ready we can push the configs!
+The services will take a while to spin up and you can keep an eye on them by running `kubectl get gcp --namespace config-control`. For now we're just concerned with whether or not the Source Repository is only so we can push our configs there. This will take a few minutes as the API gets enabled but you can check on it with `kubectl get sourcereporepository`. Once the service reads ready we can push the configs!
 
 ### Falco and Falco Sidekick
 
-While that is being created we can start setting up that repository. To get the configs for it we will pull another `kpt` package `kpt pkg get https://github.com/cartyc/config-controller-example.git/falco-sync` to work on. The configs here are already set up and the only change you'll need to do is update the `kustomization.yaml` to make sure the `falco-falcosidekick` serviceaccounts gets annotated with the information it needs to make sure workloadidentity works right.
+While that is being created we can start setting up that repository. To get the configs for it we will pull another `kpt` package 
+```
+kpt pkg get https://github.com/cartyc/config-controller-example.git/falco-sync
+```
+
+The configs here are already set up and the only change you'll need to do is update the `kustomization.yaml` to make sure the `falco-falcosidekick` serviceaccounts gets annotated with the information it needs to make sure workloadidentity works right.
 
 ```
 patch: |-
@@ -96,7 +109,9 @@ Once you have done that hopefull the Source Repo is created, this takes a few mi
 
 ```
 git init 
-git add origin https://source.developers.google.com/p/${PROJECT_ID}/r/falco-sidekick
+git add .
+git commit -m "added demo code"
+git remote add origin https://source.developers.google.com/p/${PROJECT_ID}/r/falco-sidekick
 git push origin --all
 ```
 
