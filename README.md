@@ -80,4 +80,10 @@ git add origin https://source.developers.google.com/p/${PROJECT_ID}/r/falco-side
 git push origin --all
 ```
 
-After a few minutes everything should light up and you'll have Falco up and running with Falco Sidekick sending events to Pub/Sub for you take action on or use to add more visibility.
+After a few minutes everything should light up and you'll have Falco up and running with Falco Sidekick sending events to Pub/Sub using WorkloadIdentity for authentication! 
+
+## Wrap-Up
+
+The part about this process is that aside from the work we did in the config controller cluster we didn't have to touch Kubernetes directly and we used WorkloadIdentity to enable our services to access Source Repository and PubSub with needing to create keys or tokens and store them in Git or manually add them to the cluster. That is something I am very excited about! If you already have a repo in github or gitlab you can mirror them into Source Repository and use that as git delivery mechanism.
+
+I would really like to revist this and explore the use of Cloud Deploy to deliver the Infrastructure side of things and fully avoid any `kubectl` work and leave it up to automation.
