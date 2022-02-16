@@ -87,9 +87,9 @@ spec:
   privateIpGoogleAccess: true
   secondaryIpRange:
   - rangeName: servicesrange
-    ipCidrRange: 10.3.0.0/24
+    ipCidrRange: 10.3.0.0/16
   - rangeName: clusterrange
-    ipCidrRange: 10.4.0.0/24
+    ipCidrRange: 10.4.0.0/16
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeRouter
