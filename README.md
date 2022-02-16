@@ -48,7 +48,7 @@ connector@${PROJECT_ID}.iam.gserviceaccount.com \
 
 With these permissions the Controller will be able to spin up the necessary GCP resources for the demo. Assuming you ran the prior `gcloud anthos ..` we can move on to the next step of getting our configs ready. These permissions are admitedly wider in scope than they should be in production environments.
 
-In order to get the configs we'll be using `kpt` which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found [here](https://kpt.dev/installation/).  To get the confings run the following command which will pull the configs into a new directory in you current path `kpt pkg get https://github.com/cartyc/config-controller-falco.git/configs`.
+In order to get the configs we'll be using `kpt` which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found [here](https://kpt.dev/installation/).  To get the confings run the following command which will pull the configs into a new directory in you current path `kpt pkg get https://github.com/cartyc/config-controller-example.git/configs`.
 
 Next we'll want to update the setters file and insert your project id in the data section
 ```
@@ -64,7 +64,7 @@ The services will take a while to spin up and you can keep an eye on them by run
 
 ### Falco and Falco Sidekick
 
-While that is being created we can start setting up that repository. To get the configs for it we will pull another `kpt` package `kpt pkg get https://github.com/cartyc/config-controller-falco.git/falco-sync` to work on. The configs here are already set up and the only change you'll need to do is update the `kustomization.yaml` to make sure the `falco-falcosidekick` serviceaccounts gets annotated with the information it needs to make sure workloadidentity works right.
+While that is being created we can start setting up that repository. To get the configs for it we will pull another `kpt` package `kpt pkg get https://github.com/cartyc/config-controller-example.git/falco-sync` to work on. The configs here are already set up and the only change you'll need to do is update the `kustomization.yaml` to make sure the `falco-falcosidekick` serviceaccounts gets annotated with the information it needs to make sure workloadidentity works right.
 
 ```
 patch: |-
