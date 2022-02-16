@@ -4,3 +4,7 @@ metadata:
   name: configs
 info:
   description: Infrastructure for Demo Environment
+pipeline:
+  mutators:
+    - image: gcr.io/kpt-fn/apply-setters:v0.2
+      configPath: setters.yaml

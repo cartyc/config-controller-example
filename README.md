@@ -61,9 +61,14 @@ connector@${PROJECT_ID}.iam.gserviceaccount.com \
 
 With these permissions the Controller will be able to spin up the necessary GCP resources for the demo. Assuming you ran the prior `gcloud anthos ..` we can move on to the next step of getting our configs ready. These permissions are admitedly wider in scope than they should be in production environments.
 
-In order to get the configs we'll be using `kpt` which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found [here](https://kpt.dev/installation/).  To get the confings run the following command which will pull the configs into a new directory in you current path `kpt pkg get https://github.com/cartyc/config-controller-example.git/configs`.
+In order to get the configs we'll be using `kpt` which come pre-installed in Cloud Shell but if you are running it locally the installation guide can be found [here](https://kpt.dev/installation/).  To get the confings run the following command which will pull the configs into a new directory in you current path 
+```
+kpt pkg get https://github.com/cartyc/config-controller-example.git/configs
+cd configs
+```
 
 Next we'll want to update the setters file and insert your project id in the data section
+
 ```
 data:
   PROJECT_ID: YOUR_PROJECT_ID
