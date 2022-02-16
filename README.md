@@ -20,8 +20,21 @@ So if everything goes according to plan you will create a Config Controller inst
 
 ### Config Controller
 
-Without further adoo lets create a config controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I'll be using east1 because that's closest to where I am.
+Without further adoo lets create a config controller instance in your GCP project to get started. This should take about 20 minutes or so. This is currently only available in us-central1 and us-east1 regions. I'll be using east1 because that's closest to where I am. Full instructions can be found [here](https://cloud.google.com/anthos-config-management/docs/how-to/config-controller-setup)
 
+Create a default network if it doesn't exist already
+```
+gcloud compute networks create default --subnet-mode=auto
+```
+
+Enable the required APIs
+```
+gcloud services enable krmapihosting.googleapis.com \
+    container.googleapis.com \
+    cloudresourcemanager.googleapis.com
+```
+
+Create the Config Controller instance
 ```
 gcloud anthos config controller create main --location us-east1
 ```
