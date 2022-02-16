@@ -46,7 +46,7 @@ spec:
     configSync:
       sourceFormat: unstructured
       git:
-        policyDir: falco-sync
+        policyDir: deploy
         gcpServiceAccountRef:
           external: config-sync-sa@${PROJECT_ID}.iam.gserviceaccount.com # kpt-set: config-sync-sa@${PROJECT_ID}.iam.gserviceaccount.com
         secretType: gcpserviceaccount
