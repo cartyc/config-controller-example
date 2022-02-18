@@ -5,7 +5,7 @@ metadata:
   namespace: config-control
 spec:
   projectRef:
-    external: ${PROJECT_ID} # kpt-set: $PROJECT_ID
+    external: ${PROJECT_ID} # kpt-set: ${PROJECT_ID}
   location: global
   # The resourceID must be "configmanagement" if you want to use Anthos config
   # management feature.
@@ -22,7 +22,7 @@ spec:
   location: global
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
-    issuer: https://container.googleapis.com/v1/projects/${PROJECT_ID}/locations/northamerica-northeast1/clusters/falco-sidekick
+    issuer: https://container.googleapis.com/v1/projects/${PROJECT_ID}/locations/northamerica-northeast1/clusters/falco-sidekick # kpt-set: https://container.googleapis.com/v1/projects/${PROJECT_ID}/locations/northamerica-northeast1/clusters/falco-sidekick
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
