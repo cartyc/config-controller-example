@@ -15,7 +15,7 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubMembership
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${PROJECT_ID} # kpt-set: $PROJECT_ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID} # kpt-set: ${PROJECT_ID}
   name: gke-hub-membership
   namespace: config-control
 spec:
@@ -36,7 +36,7 @@ metadata:
   namespace: config-control
 spec:
   projectRef:
-    external: ${PROJECT_ID} # kpt-set: $PROJECT_ID
+    external: ${PROJECT_ID} # kpt-set: ${PROJECT_ID}
   location: global
   membershipRef:
     name: gke-hub-membership
