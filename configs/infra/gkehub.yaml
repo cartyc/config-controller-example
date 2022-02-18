@@ -50,7 +50,7 @@ spec:
         gcpServiceAccountRef:
           external: config-sync-sa@${PROJECT_ID}.iam.gserviceaccount.com # kpt-set: config-sync-sa@${PROJECT_ID}.iam.gserviceaccount.com
         secretType: gcpserviceaccount
-        syncBranch: master
+        syncBranch: main
         syncRepo: https://source.developers.google.com/p/${PROJECT_ID}/r/falco-sidekick # kpt-set: https://source.developers.google.com/p/${PROJECT_ID}/r/falco-sidekick
     policyController:
       enabled: true
